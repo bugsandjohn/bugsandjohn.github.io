@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>bugz, lots of em'</title>
+    <title>bugz online;</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -12,6 +12,10 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         :root {
@@ -151,60 +155,36 @@
             align-items: center;
         }
 
-        .icon-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            position: relative;
-        }
-
-        .icon-box {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            padding: 30px;
-            border-radius: 12px;
+        .security-badge {
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 30px;
+        }
+
+        .badge-labels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
             justify-content: center;
-            aspect-ratio: 1;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
+            max-width: 350px;
         }
 
-        .icon-box::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, transparent, rgba(98, 160, 234, 0.1));
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .icon-box:hover {
-            border-color: var(--accent-blue);
-            transform: translateY(-5px);
-        }
-
-        .icon-box:hover::before {
-            opacity: 1;
-        }
-
-        .icon-box svg {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 10px;
-        }
-
-        .icon-label {
+        .badge-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
             font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            color: var(--text-muted);
-            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .badge-item:hover {
+            border-color: var(--accent-blue);
+            color: var(--text-primary);
+            transform: translateY(-2px);
         }
 
         section {
@@ -240,6 +220,24 @@
             border-radius: 12px;
             padding: 30px;
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interest-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent, rgba(98, 160, 234, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .interest-card:hover::before {
+            opacity: 1;
         }
 
         .interest-card:hover {
@@ -250,48 +248,67 @@
 
         .interest-card h3 {
             font-size: 20px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: var(--accent-blue);
-            font-weight: 500;
+            font-weight: 600;
+            position: relative;
         }
 
         .interest-card p {
             color: var(--text-secondary);
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.8;
+            position: relative;
         }
 
-        .projects-list {
-            list-style: none;
+        .research-grid {
             display: grid;
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
         }
 
-        .project-item {
+        .research-card {
             background: var(--bg-tertiary);
-            border-left: 3px solid var(--accent-blue);
-            padding: 25px 30px;
-            border-radius: 8px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
             transition: all 0.3s;
         }
 
-        .project-item:hover {
-            border-left-color: var(--accent-purple);
-            background: var(--bg-secondary);
-            transform: translateX(5px);
+        .research-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(98, 160, 234, 0.15);
         }
 
-        .project-title {
-            font-size: 18px;
+        .research-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .research-card h3 {
+            font-size: 20px;
             font-weight: 500;
-            margin-bottom: 8px;
             color: var(--text-primary);
+            margin-bottom: 8px;
         }
 
-        .project-description {
-            color: var(--text-muted);
-            font-size: 14px;
+        .research-count {
             font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--accent-blue);
+            margin-bottom: 12px;
+        }
+
+        .research-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         footer {
@@ -337,8 +354,8 @@
                 display: none;
             }
 
-            .icon-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .security-badge svg {
+                max-width: 250px;
             }
 
             .footer-content {
@@ -373,11 +390,11 @@
     <nav>
         <div class="container">
             <div class="nav-content">
-                <a href="#" class="logo">bugz;</a>
+                <a href="#" class="logo">Online</a>
                 <ul class="nav-links">
                     <li><a href="#interests">Interests</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#research">Research</a></li>
+                    <li><a href="https://irchaos.club/">IRCC</a></li>
                 </ul>
             </div>
         </div>
@@ -388,48 +405,60 @@
             <div class="container">
                 <div class="hero-content">
                     <div class="hero-text">
-                        <h1>[Your Name]</h1>
-                        <p class="subtitle">A security-focused researcher exploring offensive security, deception technology, and malware analysis.</p>
-                        <a href="#projects" class="cta-button">View Projects</a>
+                        <h1>bugz</h1>
+                        <p class="subtitle">A security-focused researcher exploring defensive and offensive security to secure systems, companies and people. Starting on malware analysis and expertise in Vulnerability management.</p>
+                        <a href="#research" class="cta-button">Coming Soon</a>
                     </div>
                     <div class="hero-visual">
-                        <div class="icon-grid">
-                            <div class="icon-box">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: var(--accent-blue)">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                                </svg>
-                                <span class="icon-label">Security</span>
-                            </div>
-                            <div class="icon-box">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: var(--accent-purple)">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                </svg>
-                                <span class="icon-label">Deception</span>
-                            </div>
-                            <div class="icon-box">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: var(--accent-red)">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                                </svg>
-                                <span class="icon-label">Malware</span>
-                            </div>
-                            <div class="icon-box">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: var(--accent-blue)">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                </svg>
-                                <span class="icon-label">Analysis</span>
-                            </div>
-                            <div class="icon-box">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: var(--accent-purple)">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-                                </svg>
-                                <span class="icon-label">Research</span>
-                            </div>
-                            <div class="icon-box">
-                                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: var(--accent-red)">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                                </svg>
-                                <span class="icon-label">Problem Solving</span>
+                        <div class="security-badge">
+                            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width: 100%; max-width: 350px;">
+                                <!-- Shield outline -->
+                                <path d="M100 20 L160 50 L160 110 Q160 150 100 180 Q40 150 40 110 L40 50 Z"
+                                      fill="none"
+                                      stroke="var(--accent-blue)"
+                                      stroke-width="2"
+                                      opacity="0.3"/>
+
+                                <!-- Inner shield -->
+                                <path d="M100 35 L145 55 L145 105 Q145 135 100 160 Q55 135 55 105 L55 55 Z"
+                                      fill="var(--bg-secondary)"
+                                      stroke="var(--accent-blue)"
+                                      stroke-width="2.5"/>
+
+                                <!-- Lock icon in center -->
+                                <rect x="85" y="90" width="30" height="35" rx="3"
+                                      fill="var(--bg-tertiary)"
+                                      stroke="var(--accent-purple)"
+                                      stroke-width="2"/>
+
+                                <path d="M92 90 L92 80 Q92 70 100 70 Q108 70 108 80 L108 90"
+                                      fill="none"
+                                      stroke="var(--accent-purple)"
+                                      stroke-width="2.5"/>
+
+                                <circle cx="100" cy="105" r="4" fill="var(--accent-blue)"/>
+                                <rect x="98" y="108" width="4" height="8" fill="var(--accent-blue)"/>
+
+                                <!-- Decorative elements -->
+                                <circle cx="70" cy="70" r="2" fill="var(--accent-red)" opacity="0.6"/>
+                                <circle cx="130" cy="75" r="2" fill="var(--accent-purple)" opacity="0.6"/>
+                                <circle cx="80" cy="130" r="2" fill="var(--accent-blue)" opacity="0.6"/>
+                                <circle cx="120" cy="135" r="2" fill="var(--accent-red)" opacity="0.6"/>
+
+                                <!-- Scan lines effect -->
+                                <line x1="60" y1="100" x2="140" y2="100" stroke="var(--accent-blue)" stroke-width="0.5" opacity="0.2">
+                                    <animate attributeName="y1" values="60;140;60" dur="3s" repeatCount="indefinite"/>
+                                    <animate attributeName="y2" values="60;140;60" dur="3s" repeatCount="indefinite"/>
+                                </line>
+                            </svg>
+
+                            <div class="badge-labels">
+                                <span class="badge-item">DFIR</span>
+                                <span class="badge-item">Red</span>
+                                <span class="badge-item">Blue</span>
+                                <span class="badge-item">Vuln Mgmnt</span>
+                                <span class="badge-item">Threat Intel</span>
+                                <span class="badge-item">Malware Research</span>
                             </div>
                         </div>
                     </div>
@@ -441,53 +470,67 @@
             <div class="container">
                 <div class="section-header">
                     <h2>Core Interests</h2>
-                    <p>Areas of focus in security research and threat intelligence</p>
+                    <p>Areas of focus</p>
                 </div>
                 <div class="interests-grid">
                     <div class="interest-card animate-in">
-                        <h3>Information Security</h3>
-                        <p>Offensive and defensive security techniques, vulnerability research, penetration testing, and security architecture design.</p>
+                        <h3>Defensive & Offensive Security</h3>
+                        <p>Playing both sides of the security chess game. I break things to understand how to protect them better. Penetration testing isn't just about finding holes—it's about thinking like an attacker while building defenses that actually hold up. Red team tactics inform blue team strategies. The best defenders have spent time on offense, and I'm learning both languages fluently.</p>
                     </div>
                     <div class="interest-card animate-in">
-                        <h3>Deception Technology</h3>
-                        <p>Honeypot deployment, adversary misdirection, threat detection through deception, and active defense strategies.</p>
+                        <h3>DFIR (Digital Forensics & Incident Response)</h3>
+                        <p>Digital archaeology meets crisis management. When systems get compromised, I dig through the rubble to reconstruct what happened, how they got in, and what they touched. Memory dumps, timeline analysis, artifact hunting—piecing together the attack story from digital breadcrumbs. The goal isn't just understanding the past incident, it's preventing the next one.</p>
                     </div>
                     <div class="interest-card animate-in">
-                        <h3>Malware Analysis</h3>
-                        <p>Reverse engineering, behavioral analysis, threat intelligence, and developing detection mechanisms for emerging threats.</p>
+                        <h3>Malware Analysis & Reverse Engineering</h3>
+                        <p>Deconstructing malicious code to understand the adversary's playbook. Still early in the journey, but fascinated by static analysis, behavioral profiling, and sandbox detonation. Every malware sample tells a story—who built it, what it wants, how it hides. Learning to read assembly, debug binaries, and extract IOCs. The more you understand the weapon, the better you can defend against it.</p>
                     </div>
                     <div class="interest-card animate-in">
-                        <h3>Problem Solving</h3>
-                        <p>Complex system analysis, threat modeling, incident response, and developing innovative security solutions.</p>
+                        <h3>Vulnerability Management & Cloud Security</h3>
+                        <p>Currently deep in Microsoft Defender and Sentinel, building KQL hunting queries that actually catch threats before they spread. Exploring Amazon Inspector for cloud vulnerability assessment. It's not just about scanning and patching—it's about understanding risk context, prioritizing what matters, and automating the boring parts. Modern attacks target cloud misconfigurations as much as software bugs, so the battleground has shifted.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="projects">
+        <section id="research" style="background: var(--bg-secondary); padding: 80px 0;">
             <div class="container">
                 <div class="section-header">
-                    <h2>Next Projects</h2>
-                    <p>Upcoming research and development initiatives</p>
+                    <h2>Research Output</h2>
+                    <p>Published work and open source contributions</p>
                 </div>
-                <ul class="projects-list">
-                    <li class="project-item">
-                        <div class="project-title">Threat Intelligence Automation</div>
-                        <div class="project-description">Building automated OSINT pipeline for threat detection</div>
-                    </li>
-                    <li class="project-item">
-                        <div class="project-title">Custom Honeypot Deployment</div>
-                        <div class="project-description">Implementing network-level deception infrastructure</div>
-                    </li>
-                    <li class="project-item">
-                        <div class="project-title">Malware Sandbox Environment</div>
-                        <div class="project-description">Safe isolated analysis platform for threat research</div>
-                    </li>
-                    <li class="project-item">
-                        <div class="project-title">Security Research Blog</div>
-                        <div class="project-description">Knowledge sharing and community education initiative</div>
-                    </li>
-                </ul>
+                <div class="research-grid">
+                    <div class="research-card">
+                        <div class="research-icon" style="background: rgba(98, 160, 234, 0.1); color: var(--accent-blue);">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width: 32px; height: 32px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                            </svg>
+                        </div>
+                        <h3>Detection Rules</h3>
+                        <p class="research-count">Soon KQL Queries</p>
+                        <p class="research-description">Proactive threat hunting queries for Sentinel covering emerging attack patterns</p>
+                    </div>
+                    <div class="research-card">
+                        <div class="research-icon" style="background: rgba(145, 65, 172, 0.1); color: var(--accent-purple);">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width: 32px; height: 32px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <h3>Technical Writeups</h3>
+                        <p class="research-count">Coming Soon</p>
+                        <p class="research-description">In-depth analysis of threat campaigns and defensive techniques</p>
+                    </div>
+                    <div class="research-card">
+                        <div class="research-icon" style="background: rgba(237, 51, 59, 0.1); color: var(--accent-red);">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width: 32px; height: 32px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                            </svg>
+                        </div>
+                        <h3>Open Source</h3>
+                        <p class="research-count">GitHub Repos</p>
+                        <p class="research-description">Security tools, scripts, and automation frameworks</p>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -496,13 +539,11 @@
         <div class="container">
             <div class="footer-content">
                 <div style="color: var(--text-muted); font-size: 14px;">
-                    © 2026 Security Research Profile
+                    © 2026 bugz · Security Researcher
                 </div>
                 <div class="footer-links">
-                    <a href="#" class="footer-link">GitHub</a>
-                    <a href="#" class="footer-link">Twitter</a>
-                    <a href="#" class="footer-link">LinkedIn</a>
-                    <a href="#" class="footer-link">Contact</a>
+                    <a href="#interests" class="footer-link">Interests</a>
+                    <a href="#research" class="footer-link">Research</a>
                 </div>
             </div>
         </div>
