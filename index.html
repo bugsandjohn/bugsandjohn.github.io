@@ -1,1 +1,674 @@
-HEY
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TU NOMBRE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── tokens ─────────────────────────────────────────── */
+    :root {
+      --pink:   #ff2d78;
+      --cyan:   #00f5ff;
+      --purple: #bf00ff;
+      --orange: #ff6b35;
+      --gold:   #ffcd00;
+      --dark:   #04040f;
+      --dark2:  #07071a;
+    }
+
+    /* ─── reset ──────────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ─── CRT scanlines overlay ──────────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,.04) 0px,
+        rgba(0,0,0,.04) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ─── VHS timestamp corner deco ─────────────────────── */
+    .vhs-stamp {
+      position: fixed;
+      top: 1.4rem;
+      right: 1.4rem;
+      font-family: 'Orbitron', monospace;
+      font-size: .6rem;
+      letter-spacing: .2em;
+      color: var(--pink);
+      text-shadow: 0 0 8px var(--pink);
+      opacity: .6;
+      z-index: 100;
+      pointer-events: none;
+    }
+    .vhs-rec {
+      display: inline-block;
+      width: .5em;
+      height: .5em;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 0 0 6px var(--pink);
+      margin-right: .5em;
+      animation: blink 1.2s step-end infinite;
+      vertical-align: middle;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ═══════════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 620px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--dark);
+    }
+
+    /* stars */
+    #stars-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 58%;
+      pointer-events: none;
+    }
+
+    /* sun */
+    .sun-wrap {
+      position: absolute;
+      bottom: 42%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+    .sun {
+      width: 240px;
+      height: 120px;
+      border-radius: 120px 120px 0 0;
+      background: linear-gradient(180deg,
+        var(--gold)   0%,
+        var(--orange) 22%,
+        var(--pink)   55%,
+        var(--purple) 100%
+      );
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 0 50px rgba(255,45,120,.7),
+        0 0 120px rgba(255,45,120,.35),
+        0 0 220px rgba(191,0,255,.25);
+      animation: sunPulse 4s ease-in-out infinite;
+    }
+    @keyframes sunPulse {
+      0%,100% { box-shadow: 0 0 50px rgba(255,45,120,.7), 0 0 120px rgba(255,45,120,.35), 0 0 220px rgba(191,0,255,.25); }
+      50%      { box-shadow: 0 0 80px rgba(255,45,120,.9), 0 0 180px rgba(255,45,120,.55), 0 0 300px rgba(191,0,255,.45); }
+    }
+    /* stripe mask on sun */
+    .sun::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 56%;
+      background: repeating-linear-gradient(
+        180deg,
+        transparent 0px,
+        transparent 9px,
+        var(--dark) 9px,
+        var(--dark) 14px
+      );
+    }
+
+    /* horizon glow line */
+    .horizon {
+      position: absolute;
+      bottom: 42%;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        var(--cyan)   20%,
+        #fff          50%,
+        var(--pink)   80%,
+        transparent  100%
+      );
+      box-shadow:
+        0  0 12px var(--cyan),
+        0  0 40px var(--pink),
+        0 -5px 30px rgba(255,255,255,.3);
+      z-index: 3;
+    }
+
+    /* perspective grid floor */
+    .grid-floor {
+      position: absolute;
+      top: 58%;
+      left: -100%;
+      width: 300%;
+      height: 46%;
+      background-image:
+        linear-gradient(rgba(0,245,255,.35) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,245,255,.35) 1px, transparent 1px);
+      background-size: 90px 90px;
+      transform-origin: top center;
+      transform: perspective(350px) rotateX(48deg);
+      z-index: 1;
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.1) 0%, black 35%);
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.1) 0%, black 35%);
+    }
+
+    /* vignette */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 45%, transparent 35%, rgba(4,4,15,.75) 100%);
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    /* hero text */
+    .hero-content {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      padding: 0 2rem;
+      margin-top: -3rem;
+    }
+
+    .hero-tag {
+      display: block;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(.65rem, 1.8vw, .95rem);
+      letter-spacing: .65em;
+      color: var(--cyan);
+      text-shadow: 0 0 14px var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-name {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(2.6rem, 9.5vw, 8.5rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: .92;
+      letter-spacing: .04em;
+      color: #fff;
+      /* chromatic aberration */
+      text-shadow:
+        -4px  0   var(--pink),
+         4px  0   var(--cyan),
+         0    0  30px rgba(255,255,255,.5),
+         0    0  70px rgba(255,45,120,.4);
+      animation: glitch 7s infinite;
+    }
+    @keyframes glitch {
+      0%,88%,95%,100% {
+        text-shadow: -4px 0 var(--pink), 4px 0 var(--cyan), 0 0 30px rgba(255,255,255,.5), 0 0 70px rgba(255,45,120,.4);
+        clip-path: none;
+      }
+      89% {
+        text-shadow: -7px 0 var(--cyan), 7px 0 var(--pink), 0 0 30px rgba(255,255,255,.9), 0 0 70px rgba(0,245,255,.6);
+      }
+      90% {
+        text-shadow: 4px 0 var(--pink), -4px 0 var(--cyan), 0 0 30px rgba(255,255,255,.5), 0 0 70px rgba(255,45,120,.4);
+      }
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.8vw, 1.6rem);
+      font-weight: 300;
+      letter-spacing: .3em;
+      color: rgba(255,255,255,.65);
+      text-transform: uppercase;
+      margin-top: 1.6rem;
+    }
+    .hero-subtitle em {
+      font-style: normal;
+      color: var(--pink);
+      text-shadow: 0 0 12px var(--pink);
+    }
+
+    /* scroll arrow */
+    .scroll-cta {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+    }
+    .scroll-cta span {
+      font-size: .6rem;
+      letter-spacing: .45em;
+      color: rgba(0,245,255,.55);
+      text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 42px;
+      background: linear-gradient(var(--cyan), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%,100% { opacity: .3; transform: scaleY(1); }
+      50%      { opacity: 1;  transform: scaleY(1.15); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       SHARED LAYOUT
+    ═══════════════════════════════════════════════════════ */
+    .section {
+      padding: 7rem 2rem;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      font-family: 'Orbitron', monospace;
+      font-size: .62rem;
+      letter-spacing: .6em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      opacity: .75;
+      margin-bottom: 1.2rem;
+    }
+
+    .sec-title {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1.8rem, 5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 3rem;
+      background: linear-gradient(135deg, #fff 0%, var(--pink) 55%, var(--cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .neon-divider {
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent,
+        var(--purple),
+        var(--pink),
+        var(--cyan),
+        var(--purple),
+        transparent
+      );
+      opacity: .4;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       ABOUT
+    ═══════════════════════════════════════════════════════ */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    @media (max-width: 700px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+
+    .about-text p {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,.72);
+      font-weight: 300;
+    }
+    .about-text p + p { margin-top: 1.2rem; }
+
+    /* editable highlight */
+    .highlight {
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
+    .stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+    .stat {
+      padding-left: 1.5rem;
+      border-left: 2px solid var(--pink);
+    }
+    .stat-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--pink);
+      text-shadow: 0 0 22px rgba(255,45,120,.5);
+      line-height: 1;
+    }
+    .stat-lbl {
+      font-size: .82rem;
+      letter-spacing: .22em;
+      color: rgba(255,255,255,.45);
+      text-transform: uppercase;
+      margin-top: .3rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       INTERESTS
+    ═══════════════════════════════════════════════════════ */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1.3rem;
+    }
+
+    .card {
+      position: relative;
+      padding: 1.9rem 1.7rem;
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(0,245,255,.13);
+      transition: background .3s, border-color .3s, transform .3s, box-shadow .3s;
+      overflow: hidden;
+    }
+    /* top-right bracket */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 28px; height: 28px;
+      border-top: 2px solid var(--cyan);
+      border-right: 2px solid var(--cyan);
+      transition: width .3s, height .3s;
+    }
+    /* bottom-left bracket */
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 28px; height: 28px;
+      border-bottom: 2px solid var(--pink);
+      border-left: 2px solid var(--pink);
+      transition: width .3s, height .3s;
+    }
+    .card:hover {
+      background: rgba(0,245,255,.05);
+      border-color: rgba(0,245,255,.4);
+      transform: translateY(-6px);
+      box-shadow: 0 18px 45px rgba(0,0,0,.45), 0 0 35px rgba(0,245,255,.1);
+    }
+    .card:hover::before { width: 40px; height: 40px; }
+    .card:hover::after  { width: 40px; height: 40px; }
+
+    .card-icon {
+      font-size: 2.3rem;
+      display: block;
+      margin-bottom: 1.1rem;
+    }
+    .card-title {
+      font-family: 'Orbitron', monospace;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: .65rem;
+    }
+    .card-desc {
+      font-size: .92rem;
+      color: rgba(255,255,255,.52);
+      line-height: 1.65;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════ */
+    footer {
+      position: relative;
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+    }
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--pink), transparent);
+    }
+    .footer-name {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--pink);
+      text-shadow: 0 0 22px rgba(255,45,120,.55);
+    }
+    .footer-sub {
+      font-size: .78rem;
+      letter-spacing: .28em;
+      color: rgba(255,255,255,.28);
+      text-transform: uppercase;
+      margin-top: 1.1rem;
+    }
+    .footer-sub a {
+      color: var(--cyan);
+      text-decoration: none;
+      transition: text-shadow .3s;
+    }
+    .footer-sub a:hover { text-shadow: 0 0 12px var(--cyan); }
+  </style>
+</head>
+<body>
+
+  <!-- VHS stamp -->
+  <div class="vhs-stamp" aria-hidden="true">
+    <span class="vhs-rec"></span>REC &nbsp;·&nbsp; MIAMI &nbsp;·&nbsp; <span id="vhs-time"></span>
+  </div>
+
+  <!-- ══════════ HERO ══════════ -->
+  <section class="hero">
+    <canvas id="stars-canvas" aria-hidden="true"></canvas>
+
+    <div class="sun-wrap" aria-hidden="true">
+      <div class="sun"></div>
+    </div>
+
+    <div class="horizon" aria-hidden="true"></div>
+    <div class="grid-floor" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <span class="hero-tag">✦ &nbsp; bienvenido &nbsp; ✦</span>
+      <!-- ★ EDITA: reemplaza con tu nombre -->
+      <h1 class="hero-name">Tu Nombre</h1>
+      <!-- ★ EDITA: tu rol y ciudad -->
+      <p class="hero-subtitle">
+        <em>Lo que haces</em> &nbsp;·&nbsp; Tu ciudad
+      </p>
+    </div>
+
+    <div class="scroll-cta" aria-hidden="true">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <div class="neon-divider"></div>
+
+  <!-- ══════════ ABOUT ══════════ -->
+  <section class="section">
+    <p class="eyebrow">// 001 &nbsp;·&nbsp; sobre mí</p>
+    <h2 class="sec-title">Quién soy</h2>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <!-- ★ EDITA: tu presentación personal -->
+        <p>
+          Escribe aquí tu presentación. Puedes hablar de <span class="highlight">tu historia</span>,
+          de dónde vienes y qué te mueve. Hazlo personal, directo y auténtico.
+        </p>
+        <p>
+          Un segundo párrafo si quieres profundizar en algo más:
+          tu filosofía, tu misión, o simplemente cómo ves el mundo
+          y lo que quieres dejar en él.
+        </p>
+      </div>
+
+      <div class="stats">
+        <!-- ★ EDITA: tus números / logros -->
+        <div class="stat">
+          <div class="stat-num">5+</div>
+          <div class="stat-lbl">Años de experiencia</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">∞</div>
+          <div class="stat-lbl">Ganas de aprender</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">1</div>
+          <div class="stat-lbl">Cosa a la vez, bien hecha</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="neon-divider"></div>
+
+  <!-- ══════════ INTERESTS ══════════ -->
+  <section class="section">
+    <p class="eyebrow">// 002 &nbsp;·&nbsp; intereses</p>
+    <h2 class="sec-title">Lo que me mueve</h2>
+
+    <div class="cards">
+      <!-- ★ EDITA: personaliza cada tarjeta (icono, título, descripción) -->
+      <div class="card">
+        <span class="card-icon">🎨</span>
+        <p class="card-title">Diseño</p>
+        <p class="card-desc">Tu relación con el diseño, qué te inspira, qué estilo te define.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">💻</span>
+        <p class="card-title">Tecnología</p>
+        <p class="card-desc">Qué tipo de tech te apasiona y qué estás construyendo.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">🎵</span>
+        <p class="card-title">Música</p>
+        <p class="card-desc">Géneros, artistas o cómo la música forma parte de tu vida.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">🌊</span>
+        <p class="card-title">Viajes</p>
+        <p class="card-desc">Lugares que has visitado o que sueñas con conocer.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">📚</span>
+        <p class="card-title">Lectura</p>
+        <p class="card-desc">Géneros, autores o títulos que te han marcado.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">🔥</span>
+        <p class="card-title">Tu interés</p>
+        <p class="card-desc">Personaliza esta tarjeta con lo que más te define.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer>
+    <!-- ★ EDITA: tu nombre y email de contacto -->
+    <p class="footer-name">Tu Nombre</p>
+    <p class="footer-sub">
+      © 2025 &nbsp;·&nbsp; hecho con estilo
+      &nbsp;·&nbsp; <a href="mailto:tu@email.com">contacto</a>
+    </p>
+  </footer>
+
+  <!-- ══════════ JS ══════════ -->
+  <script>
+    /* ── Stars canvas ── */
+    (function () {
+      const canvas = document.getElementById('stars-canvas');
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+
+      function buildStars(w, h) {
+        const count = Math.floor((w * h) / 2800);
+        stars = Array.from({ length: count }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.3,
+          a: Math.random() * .8 + .15,
+          da: (Math.random() - .5) * .005,
+        }));
+      }
+
+      function draw() {
+        const w = canvas.width, h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+        stars.forEach(s => {
+          s.a = Math.max(.05, Math.min(1, s.a + s.da));
+          if (s.a <= .05 || s.a >= .95) s.da *= -1;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,255,255,${s.a.toFixed(2)})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+
+      function resize() {
+        canvas.width  = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        buildStars(canvas.width, canvas.height);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+      draw();
+    })();
+
+    /* ── VHS timestamp ── */
+    (function () {
+      const el = document.getElementById('vhs-time');
+      function tick() {
+        const d = new Date();
+        el.textContent = d.toLocaleTimeString('es', { hour12: false });
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+  </script>
+</body>
+</html>
